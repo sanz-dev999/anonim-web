@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anonim Q&A</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(red,blue,black,purple);
+        background-size: 400% 400%;
+        animation: gradientBG 12s ease infinite;
+        margin: 0;
+        padding: 0;
+    }
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* Flash Petir */
+    .lightning {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: gold;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 999;
+    }
+    @keyframes flashLightning {
+        0% { opacity: 0; }
+        5% { opacity: 0,5; }
+        10% { opacity: 0,6; }
+        15% { opacity: 0,7; }
+        20% { opacity: 0,8; }
+        100% { opacity: 0,9; }
+    }
+
+    /* Box Umum */
+    .box {
+        max-width: 500px;
+        margin: auto;
+        padding: 20px;
+        background: black;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px white;
+        position: relative;
+        margin-top: 20px;
+    }
+
+    /* Efek Kilau di Box */
+    .shine {
+        position: absolute;
+        top: 0;
+        left: -75%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(120deg, transparent, rgba(255,255,255,0.5), transparent);
+        transform: skewX(-20deg);
+        animation: shineMove 4s infinite;
+        pointer-events: none;
+    }
+    @keyframes shineMove {
+    0% { left: -75%; }
+    50% { left: 125%; }
+    100% { left: 125%; }
+}
+
+@keyframes rippleEffect {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+@keyframes waveShadow {
+    0% {
+        box-shadow: 0 0 5px rgba(255,255,255,0.4),
+                    0 0 15px rgba(0, 200, 255, 0.6),
+                    0 0 25px rgba(0, 200, 255, 0.8);
+    }
+    50% {
+        box-shadow: 0 0 10px rgba(255,255,255,0.5),
+                    0 0 20px rgba(0, 200, 255, 0.7),
+                    0 0 35px rgba(0, 200, 255, 1);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(255,255,255,0.4),
+                    0 0 15px rgba(0, 200, 255, 0.6),
+                    0 0 25px rgba(0, 200, 255, 0.8);
+    }
+}
+
+textarea {
+    width: 100%;
+    height: 80px;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    resize: none;
+}
+
+/* Tombol gaya berlian + kilau */
+button {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    color: gold;
+    padding: 12px 18px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 12px 0 12px 0; /* sudut berlian */
+    animation: waveShadow 2s infinite ease-in-out;
+    transition: transform 0.2s ease;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+/* Efek shine berlian */
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: rgba(255,255,255,0.5);
+    transform: skewX(-20deg);
+    animation: shineMove 2s infinite;
+}
+
+/* Efek ripple saat klik */
+button .ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    background: rgba(255, 255, 255, 0.6);
+    animation: rippleEffect 0.6s linear;
+    pointer-events: none;
+}
+    @keyframes rippleEffect {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Efek shimmer emas */
+@keyframes goldShimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* List pertanyaan */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+/* Setiap pertanyaan */
+li {
+    position: relative;
+    background: linear-gradient(
+        90deg,
+        #ffd700,
+        #ffec8b,
+        #ffd700
+    );
+    background-size: 200% 100%;
+    animation: goldShimmer 4s linear infinite;
+    
+    padding: 12px 15px;
+    margin: 8px 0;
+    border-radius: 15px;
+    border: 2px solid #b8860b;
+    box-shadow: 0 4px 10px rgba(184, 134, 11, 0.4);
+    overflow: hidden;
+}
+
+/* Ripple muncul saat hover */
+li::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 215, 0, 0.4);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    pointer-events: none;
+}
+
+.box {
+    position: relative;
+    background: linear-gradient(145deg, silver, black);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+/* Efek shine di box */
+.box .shine {
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: skewX(-20deg);
+    animation: shineMove 3s infinite;
+}
+
+/* Judul jadi putih */
+.box h2 {
+    color: white;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+/* Daftar pertanyaan */
+#questionsList {
+    list-style: none;
+    padding: 0;
+}
+#questionsList li {
+    background: white;
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+}
+#questionsList .time {
+    font-size: 11px;
+    color: gray;
+    display: block;
+    margin-top: 5px;
+}
+
+
+li:hover::after {
+    animation: rippleEffect 0.6s ease-out;
+}
+
+/* Waktu pertanyaan */
+.time {
+    font-size: 11px;
+    color: #5c5c5c;
+    display: block;
+    margin-top: 5px;
+}
+</style>
+</head>
+<body>
+
+<!-- Flash Petir -->
+<div class="lightning" id="lightning"></div>
+
+<!-- Suara Petir -->
+<audio id="thunderSound" preload="auto">
+    <source src="https://www.soundjay.com/nature/thunder-1.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Box Input -->
+<div class="box">
+    <div class="shine"></div>
+    <h3>QUESTION & ANSWER (SANZ)</h3>
+    <h2>💬 Kirim Pertanytan</h2>
+    <textarea id="question" placeholder="Tulis pertanyaanmu tolong pakai bahasa sopan dan salam karena adab lebih tinggi daripada ilmu mu. understand and can you do it?..."></textarea>
+    <button id="sendBtn" onclick="addQuestion()">Kirim</button>
+</div>
+
+<!-- Box Output -->
+<div class="box">
+    <div class="shine"></div>
+    <h2>📜 Pertanyaan Terbaru</h2>
+    <ul id="questionsList"></ul>
+</div>
+
+<script>
+    function loadQuestions() {
+        let questions = JSON.parse(localStorage.getItem("questions") || "[]");
+        let list = document.getElementById("questionsList");
+        list.innerHTML = "";
+        questions.forEach(q => {
+            let li = document.createElement("li");
+            li.innerHTML = `<div>${q.text}</div><span class="time">${q.time}</span>`;
+            list.appendChild(li);
+        });
+    }
+
+    function addQuestion() {
+        let input = document.getElementById("question");
+        let text = input.value.trim();
+        if (!text) {
+            alert("Pertanyaan tidak boleh kosong!");
+            return;
+        }
+        let questions = JSON.parse(localStorage.getItem("questions") || "[]");
+        questions.unshift({
+            text: text,
+            time: new Date().toLocaleString()
+        });
+        localStorage.setItem("questions", JSON.stringify(questions));
+        input.value = "";
+        loadQuestions();
+    }
+
+    // Ripple Effect
+    document.getElementById("sendBtn").addEventListener("click", function(e) {
+        let circle = document.createElement("span");
+        let diameter = Math.max(this.clientWidth, this.clientHeight);
+        let radius = diameter / 2;
+
+        circle.style.width = circle.style.height = `${diameter}px`;
+        circle.style.left = `${e.clientX - this.offsetLeft - radius}px`;
+        circle.style.top = `${e.clientY - this.offsetTop - radius}px`;
+        circle.classList.add("ripple");
+
+        let ripple = this.getElementsByClassName("ripple")[0];
+        if (ripple) ripple.remove();
+        this.appendChild(circle);
+    });
+
+    // Efek Petir + Suara
+    function triggerLightning() {
+        let lightning = document.getElementById("lightning");
+        let thunder = document.getElementById("thunderSound");
+
+        lightning.style.animation = "flashLightning 0.5s ease";
+        thunder.currentTime = 0;
+        thunder.play();
+
+        setTimeout(() => {
+            lightning.style.animation = "";
+        }, 500);
+
+        setTimeout(triggerLightning, Math.random() * 5000 + 3000);
+    }
+    triggerLightning();
+
+    loadQuestions();
+    
+</script>
+</body>
+</html>
